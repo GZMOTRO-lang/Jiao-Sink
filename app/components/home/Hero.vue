@@ -1,77 +1,141 @@
-<!-
-  路径: app/components/home/Hero.vue
-  作用: 首页首屏 Hero 区域
+<!--
+  路径: app/layouts/default.vue
+  作用: 全局布局（导航栏 + 页脚）
   修改:
-    - YouTube 关注按钮链接改为你的 YouTube 频道
-    - 左侧图标使用自定义 /youtube.svg（位于 public/ 根目录）
-    - GitHub 按钮链接改为你的仓库地址
+    - 页脚第一个图标：使用 /youtube.svg，链接到你的 YouTube
+    - 页脚第二个图标：使用 /bilibili.svg，链接到你的 B 站
+    - 页脚第三个图标：GitHub 图标，链接到你的 GitHub 主页
+    - 顶部 Star 按钮保持原样（指向原项目仓库，显示原项目的 star 数）
 -->
 
 <script setup lang="ts">
-import { ArrowRight } from 'lucide-vue-next'
-import { GitHubIcon } from 'vue3-simple-icons'
-import heroUrl from '@/assets/images/hero.svg?url'
+import NumberFlow from '@number-flow/vue'
+import { Menu, Star, X } from 'lucide-vue-next'
+import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
 
-const { title, description, github, twitter } = useAppConfig()
+const showMenu = ref(false)
+const { title, telegram, twitter, github } = useAppConfig()
+const { rawStats } = useGithubStats()
 </script>
 
 <template>
-  <section>
-    <div class="py-16 md:py-24">
-      <div class="mx-auto flex max-w-6xl flex-col items-center gap-12 px-6 lg:flex-row lg:justify-between">
-        <div class="max-w-lg text-center lg:text-left">
-          <!-- YouTube 关注按钮 -->
-          <a
-            href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="在 YouTube 上关注我"
-            class="mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full border p-1 pr-3 lg:mx-0"
-          >
-            <span class="flex items-center gap-1.5 rounded-full bg-muted px-2 py-1 text-xs">
-              <!-- 修正路径：直接使用 /public/youtube.svg -->
-              <img src="/public/youtube.svg" alt="YouTube" class="size-4" />
-            </span>
-            <span class="text-sm">在 YouTube 上关注我</span>
-            <span class="block h-4 w-px bg-border" />
-            <ArrowRight aria-hidden="true" class="size-4" />
-          </a>
-
-          <h1 class="text-4xl font-medium text-balance md:text-5xl xl:text-6xl">
-            {{ title }}
-          </h1>
-          <p class="mt-6 text-lg text-pretty text-muted-foreground">
-            {{ description }}
-          </p>
-
-          <div class="mt-10 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
-            <Button as-child size="lg" class="px-5 text-base">
-              <NuxtLink to="/dashboard">
-                <span class="text-nowrap">{{ $t('dashboard.title') }}</span>
+  <div class="flex min-h-screen flex-col">
+    <!-- 头部导航栏 -->
+    <header>
+      <nav
+        :data-state="showMenu && 'active'"
+        class="fixed z-20 w-full border-b bg-background/50 backdrop-blur-3xl"
+      >
+        <div class="mx-auto max-w-6xl px-6 transition-all duration-300">
+          <div class="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
+            <div class="flex w-full items-center justify-between gap-12 lg:w-auto">
+              <NuxtLink to="/" :title="title" aria-label="home" class="flex items-center space-x-2">
+                <span class="flex size-8 items-center justify-center rounded-full">
+                  <img src="/sink.png" :alt="`${title} Logo`" class="size-full rounded-full" />
+                </span>
+                <span class="text-xl font-black">{{ title }}</span>
               </NuxtLink>
-            </Button>
-            <Button as-child size="lg" variant="ghost" class="px-5 text-base">
-              <a
-                href="https://github.com/GZMOTRO-lang/Jiao-Sink/tree/master"
-                target="_blank"
-                title="GitHub 仓库"
-                class="flex items-center gap-1.5"
+
+              <button
+                aria-label="Toggle Menu"
+                :aria-expanded="showMenu"
+                aria-controls="mobile-menu"
+                class="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                @click="showMenu = !showMenu"
               >
-                <GitHubIcon aria-hidden="true" class="size-5" />
-                <span class="text-nowrap">{{ $t('home.hero.github_repo') }}</span>
-              </a>
-            </Button>
+                <Menu class="m-auto size-6 duration-200" :class="[showMenu && 'scale-0 rotate-180 opacity-0']" />
+                <X class="absolute inset-0 m-auto size-6 duration-200" :class="[showMenu ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-180 opacity-0']" />
+              </button>
+            </div>
+
+            <div
+              id="mobile-menu"
+              class="mb-6 w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border bg-background p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:items-center lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent"
+              :class="[showMenu ? 'block' : 'hidden']"
+            >
+              <div class="flex w-full flex-col items-center space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                <!-- Star 按钮：保留原项目仓库（未修改） -->
+                <Button as-child variant="outline" size="sm">
+                  <a :href="github" target="_blank" :title="$t('layouts.footer.social.github')" class="flex items-center gap-1.5">
+                    <GitHubIcon class="size-4" />
+                    <Star class="size-3" />
+                    <NumberFlow class="tabular-nums" :value="rawStats.stars" />
+                  </a>
+                </Button>
+                <SwitchLanguage />
+                <SwitchTheme />
+              </div>
+            </div>
           </div>
         </div>
+      </nav>
+    </header>
 
-        <object
-          type="image/svg+xml"
-          :data="heroUrl"
-          class="hidden aspect-square w-96 shrink-0 md:block lg:w-[420px]"
-          aria-label="Link sharing illustration"
-          suppressHydrationWarning
-        />
+    <!-- 主内容 -->
+    <main class="flex flex-1 flex-col pt-20">
+      <slot />
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t bg-background py-8">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="flex flex-col items-center gap-6 pt-2 md:flex-row md:justify-between">
+          <div class="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+            <NuxtLink to="/" :title="title" aria-label="home" class="block size-fit">
+              <div class="flex items-center space-x-2">
+                <span class="flex size-8 items-center justify-center rounded-full">
+                  <img src="/sink.png" :alt="`${title} Logo`" class="size-full rounded-full" />
+                </span>
+                <span class="text-xl font-black">{{ title }}</span>
+              </div>
+            </NuxtLink>
+            <small class="block text-center text-sm text-muted-foreground">
+              &copy; {{ new Date().getFullYear() }}
+              <a href="https://html.zone" target="_blank" title="HTML.ZONE" class="hover:text-primary">
+                {{ $t('layouts.footer.copyright') }}
+              </a>
+            </small>
+          </div>
+
+          <div class="flex justify-center gap-6 text-sm">
+            <!-- 图标1：YouTube，使用 /youtube.svg -->
+            <a
+              href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="YouTube"
+              aria-label="YouTube"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <img src="/youtube.svg" alt="YouTube" class="size-6" />
+            </a>
+
+            <!-- 图标2：Bilibili，使用 /bilibili.svg -->
+            <a
+              href="https://b23.tv/jypNXVG"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Bilibili"
+              aria-label="Bilibili"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <img src="/bilibili.svg" alt="Bilibili" class="size-6" />
+            </a>
+
+            <!-- 图标3：GitHub，使用组件 -->
+            <a
+              href="https://github.com/GZMOTRO-lang"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="GitHub"
+              aria-label="GitHub"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <GitHubIcon class="size-6" />
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </footer>
+  </div>
 </template>
