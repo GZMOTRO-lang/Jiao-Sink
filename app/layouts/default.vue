@@ -44,6 +44,13 @@ const { rawStats } = useGithubStats()
               :class="[showMenu ? 'block' : 'hidden']"
             >
               <div class="flex w-full flex-col items-center space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                <!-- ✨ 新增：申请短链入口（桌面 & 移动端均显示） -->
+                <Button as-child variant="outline" size="sm">
+                  <NuxtLink to="/apply" class="flex items-center gap-1.5">
+                    申请短链
+                  </NuxtLink>
+                </Button>
+
                 <Button as-child variant="outline" size="sm">
                   <a :href="github" target="_blank" :title="$t('layouts.footer.social.github')" class="flex items-center gap-1.5">
                     <GitHubIcon class="size-4" />
