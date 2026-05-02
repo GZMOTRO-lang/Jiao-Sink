@@ -2,8 +2,8 @@
   路径: app/layouts/default.vue
   作用: 全局布局（导航栏 + 页脚）
   修改:
-    - 页脚第一个图标：使用 /youtube.svg，链接到你的 YouTube
-    - 页脚第二个图标：使用 /bilibili.svg，链接到你的 B 站
+    - 页脚第一个图标：使用 /public/youtube.svg，链接到你的 YouTube
+    - 页脚第二个图标：使用 /public/bilibili.svg，链接到你的 B 站
     - 页脚第三个图标：GitHub 图标，链接到你的 GitHub 主页
     - 顶部 Star 按钮保持原样（指向原项目仓库，显示原项目的 star 数）
 -->
@@ -98,7 +98,7 @@ const { rawStats } = useGithubStats()
           </div>
 
           <div class="flex justify-center gap-6 text-sm">
-            <!-- 图标1：YouTube，使用 /youtube.svg -->
+            <!-- 图标1：YouTube，使用 /public/youtube.svg -->
             <a
               href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
               target="_blank"
@@ -107,10 +107,10 @@ const { rawStats } = useGithubStats()
               aria-label="YouTube"
               class="block text-muted-foreground hover:text-primary"
             >
-              <img src="/youtube.svg" alt="YouTube" class="size-6" />
+              <img src="/public/youtube.svg" alt="YouTube" class="size-6" />
             </a>
 
-            <!-- 图标2：Bilibili，使用 /bilibili.svg -->
+            <!-- 图标2：Bilibili，使用 /public/bilibili.svg -->
             <a
               href="https://b23.tv/jypNXVG"
               target="_blank"
@@ -119,7 +119,7 @@ const { rawStats } = useGithubStats()
               aria-label="Bilibili"
               class="block text-muted-foreground hover:text-primary"
             >
-              <img src="/bilibili.svg" alt="Bilibili" class="size-6" />
+              <img src="/public/bilibili.svg" alt="Bilibili" class="size-6" />
             </a>
 
             <!-- 图标3：GitHub，使用组件 -->
