@@ -1,16 +1,33 @@
+<!--
+  文件路径: app/layouts/default.vue
+  作用: 整个网站的全局布局，包括顶部导航栏、页脚、主题切换、语言切换等。
+  本次修改要点:
+    1. 页脚第一个图标 → 使用自定义 youtube.svg，链接为你的 YouTube 频道。
+    2. 页脚第二个图标 → 使用自定义 bilibili.svg，链接为你的 B 站内容。
+    3. 页脚第三个图标 → 保留 GitHubIcon，链接为你的 GitHub 主页。
+    4. 顶部导航栏右侧的 Star 按钮保持原样（指向原项目仓库，显示原项目 star 数）。
+    5. 其他功能（主题、语言、响应式菜单）完全保留。
+-->
+
 <script setup lang="ts">
+// 引入数字动画组件（用于显示 star 数量）
 import NumberFlow from '@number-flow/vue'
+// 引入图标: Menu（菜单）、Star（星标）、X（关闭）
 import { Menu, Star, X } from 'lucide-vue-next'
+// 引入第三方图标组件: GitHubIcon（GitHub 猫）、TelegramIcon（纸飞机，但此处已不再使用）、XIcon（不再使用，保留以防其他位置用到）
 import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
 
+// 移动端菜单显示状态
 const showMenu = ref(false)
+// 从应用配置中获取标题、社交链接等（这些值通常来自 app.config.ts 或环境变量）
 const { title, telegram, twitter, github } = useAppConfig()
+// 获取 GitHub 仓库的统计数据（包括 star 数量），此处 rawStats 指向原项目地址（未作修改）
 const { rawStats } = useGithubStats()
 </script>
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <!-- Header -->
+    <!-- ======================= 头部导航栏 ======================= -->
     <header>
       <nav
         :data-state="showMenu && 'active'"
@@ -23,6 +40,7 @@ const { rawStats } = useGithubStats()
               lg:gap-0 lg:py-4
             "
           >
+            <!-- Logo 区域 -->
             <div
               class="
                 flex w-full items-center justify-between gap-12
@@ -47,6 +65,7 @@ const { rawStats } = useGithubStats()
                 <span class="text-xl font-black">{{ title }}</span>
               </NuxtLink>
 
+              <!-- 移动端菜单按钮 -->
               <button
                 aria-label="Toggle Menu"
                 :aria-expanded="showMenu"
@@ -72,6 +91,7 @@ const { rawStats } = useGithubStats()
               </button>
             </div>
 
+            <!-- 右侧菜单（完整导航项） -->
             <div
               id="mobile-menu"
               class="
@@ -93,6 +113,7 @@ const { rawStats } = useGithubStats()
                   md:w-fit
                 "
               >
+                <!-- Star 按钮：保持指向原项目仓库（未修改） -->
                 <Button
                   as-child
                   variant="outline"
@@ -110,7 +131,9 @@ const { rawStats } = useGithubStats()
                   </a>
                 </Button>
 
+                <!-- 语言切换组件（预置） -->
                 <SwitchLanguage />
+                <!-- 主题切换组件（预置） -->
                 <SwitchTheme />
               </div>
             </div>
@@ -119,12 +142,12 @@ const { rawStats } = useGithubStats()
       </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- ======================= 主内容区域 ======================= -->
     <main class="flex flex-1 flex-col pt-20">
       <slot />
     </main>
 
-    <!-- Footer -->
+    <!-- ======================= 页脚 ======================= -->
     <footer class="border-t bg-background py-8">
       <div class="mx-auto max-w-6xl px-6">
         <div
@@ -133,6 +156,7 @@ const { rawStats } = useGithubStats()
             md:flex-row md:justify-between
           "
         >
+          <!-- 左侧：Logo + 版权信息 -->
           <div
             class="
               flex flex-col items-center gap-4
@@ -172,46 +196,60 @@ const { rawStats } = useGithubStats()
             </small>
           </div>
 
+          <!-- 右侧：三个社交媒体图标（均已自定义） -->
           <div class="flex justify-center gap-6 text-sm">
+            <!-- 
+              图标 1：YouTube
+              使用自定义 SVG（路径 /icons/youtube.svg）
+              链接指向你的 YouTube 频道
+            -->
             <a
-              v-if="twitter"
-              :href="twitter"
+              href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
               target="_blank"
               rel="noopener noreferrer"
-              :title="$t('layouts.footer.social.twitter')"
-              aria-label="Twitter"
-              class="
-                block text-muted-foreground
-                hover:text-primary
-              "
+              title="YouTube"
+              aria-label="YouTube"
+              class="block text-muted-foreground hover:text-primary"
             >
-              <XIcon class="size-6" />
+              <img 
+                src="/icons/youtube.svg" 
+                alt="YouTube" 
+                class="size-6"
+              />
             </a>
+
+            <!-- 
+              图标 2：Bilibili（哔哩哔哩）
+              使用自定义 SVG（路径 /icons/bilibili.svg）
+              链接指向你的 B 站页面（例如视频或空间）
+            -->
             <a
-              v-if="telegram"
-              :href="telegram"
+              href="https://b23.tv/jypNXVG"
               target="_blank"
               rel="noopener noreferrer"
-              :title="$t('layouts.footer.social.telegram')"
-              aria-label="Telegram"
-              class="
-                block text-muted-foreground
-                hover:text-primary
-              "
+              title="Bilibili"
+              aria-label="Bilibili"
+              class="block text-muted-foreground hover:text-primary"
             >
-              <TelegramIcon class="size-6" />
+              <img 
+                src="/icons/bilibili.svg" 
+                alt="Bilibili" 
+                class="size-6"
+              />
             </a>
+
+            <!-- 
+              图标 3：GitHub
+              使用 vue3-simple-icons 提供的 GitHubIcon 组件
+              链接指向你的 GitHub 个人主页
+            -->
             <a
-              v-if="github"
-              :href="github"
+              href="https://github.com/GZMOTRO-lang"
               target="_blank"
               rel="noopener noreferrer"
-              :title="$t('layouts.footer.social.github')"
+              title="GitHub"
               aria-label="GitHub"
-              class="
-                block text-muted-foreground
-                hover:text-primary
-              "
+              class="block text-muted-foreground hover:text-primary"
             >
               <GitHubIcon class="size-6" />
             </a>
