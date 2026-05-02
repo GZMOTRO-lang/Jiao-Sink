@@ -1,21 +1,7 @@
-<!--
-  路径: app/layouts/default.vue
-  作用: 全局布局（顶部导航栏 + 页脚）
-  修改:
-    - 顶部 Star 按钮保持原样（指向原项目仓库）
-    - 页脚三个图标：
-        1. YouTube 使用自定义 SVG（~/assets/youtube.svg），链接到你的 YouTube
-        2. Bilibili 使用自定义 SVG（~/assets/bilibili.svg），链接到你的 B 站
-        3. GitHub 使用组件图标，链接到你的 GitHub 主页
--->
-
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { Menu, Star, X } from 'lucide-vue-next'
 import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
-// 修正：使用 ~/assets/ 指向项目根目录下的 assets 文件夹
-import youtubeSvg from '~/assets/youtube.svg'
-import bilibiliSvg from '~/assets/bilibili.svg'
 
 const showMenu = ref(false)
 const { title, telegram, twitter, github } = useAppConfig()
@@ -24,7 +10,6 @@ const { rawStats } = useGithubStats()
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <!-- 头部导航栏 -->
     <header>
       <nav
         :data-state="showMenu && 'active'"
@@ -58,7 +43,6 @@ const { rawStats } = useGithubStats()
               :class="[showMenu ? 'block' : 'hidden']"
             >
               <div class="flex w-full flex-col items-center space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <!-- Star 按钮：保留原项目仓库（未修改） -->
                 <Button as-child variant="outline" size="sm">
                   <a :href="github" target="_blank" :title="$t('layouts.footer.social.github')" class="flex items-center gap-1.5">
                     <GitHubIcon class="size-4" />
@@ -75,12 +59,10 @@ const { rawStats } = useGithubStats()
       </nav>
     </header>
 
-    <!-- 主内容 -->
     <main class="flex flex-1 flex-col pt-20">
       <slot />
     </main>
 
-    <!-- 页脚 -->
     <footer class="border-t bg-background py-8">
       <div class="mx-auto max-w-6xl px-6">
         <div class="flex flex-col items-center gap-6 pt-2 md:flex-row md:justify-between">
@@ -102,7 +84,7 @@ const { rawStats } = useGithubStats()
           </div>
 
           <div class="flex justify-center gap-6 text-sm">
-            <!-- 图标1：YouTube，使用自定义 SVG -->
+            <!-- 直接使用 public 下的绝对路径 -->
             <a
               href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
               target="_blank"
@@ -111,10 +93,9 @@ const { rawStats } = useGithubStats()
               aria-label="YouTube"
               class="block text-muted-foreground hover:text-primary"
             >
-              <img :src="youtubeSvg" alt="YouTube" class="size-6" />
+              <img src="/youtube.svg" alt="YouTube" class="size-6" />
             </a>
 
-            <!-- 图标2：Bilibili，使用自定义 SVG -->
             <a
               href="https://b23.tv/jypNXVG"
               target="_blank"
@@ -123,10 +104,133 @@ const { rawStats } = useGithubStats()
               aria-label="Bilibili"
               class="block text-muted-foreground hover:text-primary"
             >
-              <img :src="bilibiliSvg" alt="Bilibili" class="size-6" />
+              <img src="/bilibili.svg" alt="Bilibili" class="size-6" />
             </a>
 
-            <!-- 图标3：GitHub，使用组件 -->
+            <a
+              href="https://github.com/GZMOTRO-lang"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="GitHub"
+              aria-label="GitHub"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <GitHubIcon class="size-6" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</template><script setup lang="ts">
+import NumberFlow from '@number-flow/vue'
+import { Menu, Star, X } from 'lucide-vue-next'
+import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
+
+const showMenu = ref(false)
+const { title, telegram, twitter, github } = useAppConfig()
+const { rawStats } = useGithubStats()
+</script>
+
+<template>
+  <div class="flex min-h-screen flex-col">
+    <header>
+      <nav
+        :data-state="showMenu && 'active'"
+        class="fixed z-20 w-full border-b bg-background/50 backdrop-blur-3xl"
+      >
+        <div class="mx-auto max-w-6xl px-6 transition-all duration-300">
+          <div class="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
+            <div class="flex w-full items-center justify-between gap-12 lg:w-auto">
+              <NuxtLink to="/" :title="title" aria-label="home" class="flex items-center space-x-2">
+                <span class="flex size-8 items-center justify-center rounded-full">
+                  <img src="/sink.png" :alt="`${title} Logo`" class="size-full rounded-full" />
+                </span>
+                <span class="text-xl font-black">{{ title }}</span>
+              </NuxtLink>
+
+              <button
+                aria-label="Toggle Menu"
+                :aria-expanded="showMenu"
+                aria-controls="mobile-menu"
+                class="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                @click="showMenu = !showMenu"
+              >
+                <Menu class="m-auto size-6 duration-200" :class="[showMenu && 'scale-0 rotate-180 opacity-0']" />
+                <X class="absolute inset-0 m-auto size-6 duration-200" :class="[showMenu ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-180 opacity-0']" />
+              </button>
+            </div>
+
+            <div
+              id="mobile-menu"
+              class="mb-6 w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border bg-background p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:items-center lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent"
+              :class="[showMenu ? 'block' : 'hidden']"
+            >
+              <div class="flex w-full flex-col items-center space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                <Button as-child variant="outline" size="sm">
+                  <a :href="github" target="_blank" :title="$t('layouts.footer.social.github')" class="flex items-center gap-1.5">
+                    <GitHubIcon class="size-4" />
+                    <Star class="size-3" />
+                    <NumberFlow class="tabular-nums" :value="rawStats.stars" />
+                  </a>
+                </Button>
+                <SwitchLanguage />
+                <SwitchTheme />
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex flex-1 flex-col pt-20">
+      <slot />
+    </main>
+
+    <footer class="border-t bg-background py-8">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="flex flex-col items-center gap-6 pt-2 md:flex-row md:justify-between">
+          <div class="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+            <NuxtLink to="/" :title="title" aria-label="home" class="block size-fit">
+              <div class="flex items-center space-x-2">
+                <span class="flex size-8 items-center justify-center rounded-full">
+                  <img src="/sink.png" :alt="`${title} Logo`" class="size-full rounded-full" />
+                </span>
+                <span class="text-xl font-black">{{ title }}</span>
+              </div>
+            </NuxtLink>
+            <small class="block text-center text-sm text-muted-foreground">
+              &copy; {{ new Date().getFullYear() }}
+              <a href="https://html.zone" target="_blank" title="HTML.ZONE" class="hover:text-primary">
+                {{ $t('layouts.footer.copyright') }}
+              </a>
+            </small>
+          </div>
+
+          <div class="flex justify-center gap-6 text-sm">
+            <!-- 直接使用 public 下的绝对路径 -->
+            <a
+              href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="YouTube"
+              aria-label="YouTube"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <img src="/youtube.svg" alt="YouTube" class="size-6" />
+            </a>
+
+            <a
+              href="https://b23.tv/jypNXVG"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Bilibili"
+              aria-label="Bilibili"
+              class="block text-muted-foreground hover:text-primary"
+            >
+              <img src="/bilibili.svg" alt="Bilibili" class="size-6" />
+            </a>
+
             <a
               href="https://github.com/GZMOTRO-lang"
               target="_blank"
