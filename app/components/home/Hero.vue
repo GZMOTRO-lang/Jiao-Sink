@@ -1,18 +1,7 @@
-<!--
-  路径: app/components/home/Hero.vue
-  作用: 首页首屏 Hero 区域
-  修改:
-    - "在 X 上关注我" 改为 "在 YouTube 上关注我"，链接到你的 YouTube 频道
-    - 左侧图标改用自定义 SVG，从 ~/assets/youtube.svg 导入
-    - GitHub 仓库按钮链接改为你的仓库地址
--->
-
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
 import { GitHubIcon } from 'vue3-simple-icons'
 import heroUrl from '@/assets/images/hero.svg?url'
-// 修正：使用 ~/assets/ 指向项目根目录下的 assets 文件夹
-import youtubeSvg from '~/assets/youtube.svg'
 
 const { title, description, github, twitter } = useAppConfig()
 </script>
@@ -22,7 +11,6 @@ const { title, description, github, twitter } = useAppConfig()
     <div class="py-16 md:py-24">
       <div class="mx-auto flex max-w-6xl flex-col items-center gap-12 px-6 lg:flex-row lg:justify-between">
         <div class="max-w-lg text-center lg:text-left">
-          <!-- YouTube 关注按钮 -->
           <a
             href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
             target="_blank"
@@ -31,7 +19,8 @@ const { title, description, github, twitter } = useAppConfig()
             class="mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full border p-1 pr-3 lg:mx-0"
           >
             <span class="flex items-center gap-1.5 rounded-full bg-muted px-2 py-1 text-xs">
-              <img :src="youtubeSvg" alt="YouTube" class="size-4" />
+              <!-- 直接使用 public 下的绝对路径 -->
+              <img src="/youtube.svg" alt="YouTube" class="size-4" />
             </span>
             <span class="text-sm">在 YouTube 上关注我</span>
             <span class="block h-4 w-px bg-border" />
