@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
-import { GitHubIcon, XIcon } from 'vue3-simple-icons'
+import { GitHubIcon } from 'vue3-simple-icons'
 import heroUrl from '@/assets/images/hero.svg?url'
 
 const { title, description, github, twitter } = useAppConfig()
@@ -26,12 +26,12 @@ const { title, description, github, twitter } = useAppConfig()
             lg:text-left
           "
         >
-          <!-- Twitter Follow Badge -->
+          <!-- YouTube Follow Badge -->
           <a
-            :href="twitter"
+            href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
             target="_blank"
-            rel="noopener"
-            :title="$t('home.twitter.follow')"
+            rel="noopener noreferrer"
+            title="在 YouTube 上关注我"
             class="
               mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full
               border p-1 pr-3
@@ -44,9 +44,9 @@ const { title, description, github, twitter } = useAppConfig()
                 text-xs
               "
             >
-              <XIcon aria-hidden="true" class="size-3" />
+              <span class="text-xs">🎬</span>
             </span>
-            <span class="text-sm">{{ $t('home.twitter.follow') }}</span>
+            <span class="text-sm">在 YouTube 上关注我</span>
             <span class="block h-4 w-px bg-border" />
             <ArrowRight aria-hidden="true" class="size-4" />
           </a>
@@ -87,9 +87,9 @@ const { title, description, github, twitter } = useAppConfig()
               class="px-5 text-base"
             >
               <a
-                :href="github"
+                href="https://github.com/GZMOTRO-lang/Jiao-Sink/tree/master"
                 target="_blank"
-                :title="$t('layouts.footer.social.github')"
+                title="GitHub 仓库"
                 class="flex items-center gap-1.5"
               >
                 <GitHubIcon aria-hidden="true" class="size-5" />
