@@ -2,17 +2,17 @@
   路径: app/components/home/Hero.vue
   作用: 首页首屏 Hero 区域
   修改:
-    - YouTube 关注按钮链接改为你的 YouTube 频道
-    - 左侧图标 import 自 @/assets/youtube.svg
-    - GitHub 按钮链接改为你的仓库地址
+    - "在 X 上关注我" 改为 "在 YouTube 上关注我"，链接到你的 YouTube 频道
+    - 左侧图标改用自定义 SVG，从 ~/assets/youtube.svg 导入
+    - GitHub 仓库按钮链接改为你的仓库地址
 -->
 
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
 import { GitHubIcon } from 'vue3-simple-icons'
 import heroUrl from '@/assets/images/hero.svg?url'
-// 通过 import 导入 SVG 文件，Vite 会将其解析为静态资源路径
-import youtubeSvg from '@/assets/youtube.svg'
+// 修正：使用 ~/assets/ 指向项目根目录下的 assets 文件夹
+import youtubeSvg from '~/assets/youtube.svg'
 
 const { title, description, github, twitter } = useAppConfig()
 </script>
@@ -31,7 +31,6 @@ const { title, description, github, twitter } = useAppConfig()
             class="mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full border p-1 pr-3 lg:mx-0"
           >
             <span class="flex items-center gap-1.5 rounded-full bg-muted px-2 py-1 text-xs">
-              <!-- 使用 import 的变量，确保路径正确 -->
               <img :src="youtubeSvg" alt="YouTube" class="size-4" />
             </span>
             <span class="text-sm">在 YouTube 上关注我</span>

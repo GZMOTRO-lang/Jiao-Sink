@@ -1,20 +1,21 @@
 <!--
   路径: app/layouts/default.vue
-  作用: 全局布局（导航栏 + 页脚）
+  作用: 全局布局（顶部导航栏 + 页脚）
   修改:
-    - 页脚第一个图标：import youtube.svg，链接到你的 YouTube
-    - 页脚第二个图标：import bilibili.svg，链接到你的 B 站
-    - 页脚第三个图标：GitHub 图标，链接到你的 GitHub 主页
-    - 顶部 Star 按钮保持原样（指向原项目仓库，显示原项目的 star 数）
+    - 顶部 Star 按钮保持原样（指向原项目仓库）
+    - 页脚三个图标：
+        1. YouTube 使用自定义 SVG（~/assets/youtube.svg），链接到你的 YouTube
+        2. Bilibili 使用自定义 SVG（~/assets/bilibili.svg），链接到你的 B 站
+        3. GitHub 使用组件图标，链接到你的 GitHub 主页
 -->
 
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { Menu, Star, X } from 'lucide-vue-next'
 import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
-// 通过 import 导入自定义 SVG 文件，Vite 会将其解析为静态资源路径
-import youtubeSvg from '@/assets/youtube.svg'
-import bilibiliSvg from '@/assets/bilibili.svg'
+// 修正：使用 ~/assets/ 指向项目根目录下的 assets 文件夹
+import youtubeSvg from '~/assets/youtube.svg'
+import bilibiliSvg from '~/assets/bilibili.svg'
 
 const showMenu = ref(false)
 const { title, telegram, twitter, github } = useAppConfig()
@@ -23,7 +24,7 @@ const { rawStats } = useGithubStats()
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <!-- 头部导航栏（保持不变） -->
+    <!-- 头部导航栏 -->
     <header>
       <nav
         :data-state="showMenu && 'active'"
@@ -101,7 +102,7 @@ const { rawStats } = useGithubStats()
           </div>
 
           <div class="flex justify-center gap-6 text-sm">
-            <!-- 图标1：YouTube，使用 import 的变量 -->
+            <!-- 图标1：YouTube，使用自定义 SVG -->
             <a
               href="https://youtube.com/channel/UCn6epUD3BxsRhQrBTMun3YQ?si=rhB13pPeBtuQFapn"
               target="_blank"
@@ -113,7 +114,7 @@ const { rawStats } = useGithubStats()
               <img :src="youtubeSvg" alt="YouTube" class="size-6" />
             </a>
 
-            <!-- 图标2：Bilibili，使用 import 的变量 -->
+            <!-- 图标2：Bilibili，使用自定义 SVG -->
             <a
               href="https://b23.tv/jypNXVG"
               target="_blank"
