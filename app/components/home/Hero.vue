@@ -1,4 +1,4 @@
-<!--
+<!-
   路径: app/components/home/Hero.vue
   作用: 首页首屏 Hero 区域
   修改:
