@@ -29,8 +29,8 @@ const { title, description, github, twitter } = useAppConfig()
             class="mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full border p-1 pr-3 lg:mx-0"
           >
             <span class="flex items-center gap-1.5 rounded-full bg-muted px-2 py-1 text-xs">
-              <!-- 修正路径：直接使用 /youtube.svg -->
-              <img src="/youtube.svg" alt="YouTube" class="size-4" />
+              <!-- 修正路径：直接使用 /public/youtube.svg -->
+              <img src="/public/youtube.svg" alt="YouTube" class="size-4" />
             </span>
             <span class="text-sm">在 YouTube 上关注我</span>
             <span class="block h-4 w-px bg-border" />
